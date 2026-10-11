@@ -3,12 +3,15 @@ name: Keep Qdrant cluster alive
 on:
   schedule:
     - cron: "0 6 * * *"  # daily at 06:00 UTC
-  workflow_dispatch:       # also allows manually triggering it from GitHub's UI
+  workflow_dispatch:
 
 jobs:
   ping-qdrant:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
       - name: Install qdrant-client
         run: pip install qdrant-client
 
@@ -16,9 +19,4 @@ jobs:
         env:
           QDRANT_URL: ${{ secrets.QDRANT_URL }}
           QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
-        run: python -c "
-          import os
-          from qdrant_client import QdrantClient
-          client = QdrantClient(url=os.environ['QDRANT_URL'], api_key=os.environ['QDRANT_API_KEY'])
-          print('Collections:', client.get_collections())
-          "
+        run: python scripts/keepalive/ping_qdrant.py
