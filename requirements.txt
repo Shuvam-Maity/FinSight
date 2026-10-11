@@ -1,0 +1,17 @@
+streamlit
+langchain
+langchain-core
+langchain-groq
+langchain-qdrant
+langchain-text-splitters
+qdrant-client
+fastembed
+pypdf
+docx2txt
+python-dotenv
+pymongo
+bcrypt
+redis
+langchain-mcp-adapters
+langgraph
+pdfplumber
