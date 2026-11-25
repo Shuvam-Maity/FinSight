@@ -213,6 +213,8 @@ _TOOL_LABELS = {
     "tavily_extract": "Reading a web page...",
 }
 
+_HISTORY_CHAR_LIMIT = 600
+
 
 def _parse_tavily_sources(raw) -> list[dict]:
     """Tavily's MCP tool returns a list of content blocks; the 'text' block is a
@@ -298,7 +300,10 @@ def render_chat(user: dict) -> None:
         try:
             agent = get_cached_agent()
             history = get_history(chat_id, user["id"])
-            lc_messages = [{"role": m["role"], "content": m["content"]} for m in history]
+            lc_messages = [
+                {"role": m["role"], "content": m["content"][:_HISTORY_CHAR_LIMIT]}
+                for m in history
+            ]
             lc_messages.append({"role": "user", "content": question})
 
             with st.status("Thinking...", expanded=False) as status:
